@@ -7,6 +7,7 @@ public:
 	SegmentTree(int size){
 		segmentTree.resize(4*size);
 	}
+	//build a segment tree where every node stores the minimum of the range represented by the node
 	void build(int index, int low, int right, vector<int>&ar) {
 		if(low==right){
 			segmentTree[index]=ar[low];
@@ -17,6 +18,7 @@ public:
 		build(2*index+2, mid+1, right, ar);
 		segmentTree[index] = segmentTree[2*index+1]+segmentTree[2*index+2];
 	}
+	//query to find the sum of array elements from l to r
 	int query(int index, int low, int right, int l, int r) {
 		if(l>right || r<low)
 			return 0;
@@ -27,6 +29,7 @@ public:
 
 
 	}
+	//point update -> to update a specific array index
 	void update(int index, int low, int right, int i, int val) {
 		if(low==right) {
 			segmentTree[index]=val;
@@ -40,37 +43,3 @@ public:
 		segmentTree[index]=segmentTree[2*index+1]+segmentTree[2*index+2];
 	}
 };
-
-int main() {
-#ifndef ONLINE_JUDGE
-	//for getting input from input.txt
-	freopen("input.txt", "r", stdin);
-	//for writing output to output.txt 
-	freopen("output.txt", "w", stdout);
-#endif
-	int n;
-	cin>>n;
-	vector<int>ar(n);
-	for(int i=0; i<n; i++)
-		cin>>ar[i];
-	SegmentTree segmentTree(n);
-	segmentTree.build(0, 0, n-1, ar);
-	int q;
-	cin>>q;
-	while(q--) {
-		int type;
-		cin>>type;
-		if(type==1) {
-			int l, r;
-			cin>>l>>r;	
-			cout<<segmentTree.query(0, 0, n-1, l, r)<<endl;
-		}else {
-			int i, val;
-			cin>>i>>val;
-			segmentTree.update(0, 0, n-1, i, val);
-			ar[i]=val;
-		}
-		
-	}
-
-} 
